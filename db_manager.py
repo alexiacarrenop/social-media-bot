@@ -15,10 +15,13 @@ def create_table():
 def insert_data():
     cur.execute("""
     INSERT INTO posts (post_text, scheduled_date)
-                VALUES
-    ('and suddenly hades was only a man, with a taste of nectar upon his lips', '2026-06-19'),
-    ('to know how it ends and still begin to sing it again, as if it might turn out this time. i learnt that from a friend of mine', '2026-06-21'),
-    ('it was like holding the world when you held her, like yours were the arms that the whole world was in. and there were no words for the way that you felt, so you opened your mouth and you started to sing', '2026-06-22')
+VALUES
+  ('some flowers bloom when the green grass grows. our praise is not for them, but the ones who bloom in the bitter snow. we raise our cups to them.', '2026-06-23'),
+  ('i knew you before we met, and i don’t even know you yet. all i know is you’re someone i have always known.', '2026-06-24'),
+  ('i am more than memory. i am what might be, i am mystery. you know me, so show me.', '2026-06-25'),
+  ('take it from a woman of my age: there is nothing love can’t change. even when the bricks are stacked, love is blooming through the cracks. even when the light is gone, love is reaching for the sun. it was love that spun the world, when i was a young girl.', '2026-06-26'),
+  ('love is patient, love is kind. it always protects, always trusts, always hopes, always perseveres. love never fails.', '2026-06-27'),
+  ('melt with you ‘til it all turns black' || CHAR(10) || 'when you get so close and you can’t go back', '2026-06-28');
     """)
     con.commit()
 

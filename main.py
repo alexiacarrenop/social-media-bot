@@ -4,7 +4,7 @@ from atproto import Client
                      
 def job():
     # from github secrets
-    username = os.eniron.get("BLUESKY_USERNAME")
+    username = os.environ.get("BLUESKY_USERNAME")
     password = os.environ.get("BLUESKY_PASSWORD")
 
     if not username or not password:

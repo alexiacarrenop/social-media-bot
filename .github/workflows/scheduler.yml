@@ -23,4 +23,7 @@ jobs:
           pip install atproto
 
       - name: Run the script
+        env:
+            BLUESKY_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
+            BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
         run: python main.py 

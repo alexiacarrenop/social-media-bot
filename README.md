@@ -2,15 +2,15 @@
 
 A serverless Python bot that automatically selects random lyrics from an SQL database and posts them directly to Bluesky. 
 
-The project runs completely free using **GitHub Actions**, meaning it requires no external hosting server and runs entirely on a cloud schedule.
+The project runs completely free using **GitHub Actions**.
 
 ---
 
 ## How It Works
 
-* **Database Integration:** Built using a SQLite database structure to manage a collection of lyric blocks cleanly containing multi-line breaks.
+* **Database Integration:** Built using a SQLite database structure to manage a collection of lyrics.
 * **Automation Pipeline:** Driven by a GitHub Actions YAML schedule runner that wakes up daily, logs into the platform, and posts the content.
-* **Secure Environment:** Uses hidden GitHub Repository Secrets to protect account credentials (username and password) without hardcoding authentication keys.
+* **Secure Environment:** Uses hidden GitHub Repository Secrets to protect account credentials (username and password).
 
 ---
 
@@ -37,4 +37,4 @@ To run this  yourself, you must insert your login credentials securely into your
 | **`BLUESKY_USERNAME`** | Your username *(e.g., username.bsky.social)* |
 | **`BLUESKY_PASSWORD`** | An App Password generated in your Bluesky settings |
 
-> ⚠️ **Important:** Do not use your main account password. Always generate a unique App Password inside your Bluesky account settings (*Settings -> App Passwords*) to keep your primary credentials secure.
+> ⚠️ **Important:** Do not use your main account password. Always generate a unique App Password inside your Bluesky account settings (*Settings -> App Passwords*) to keep your credentials safe.

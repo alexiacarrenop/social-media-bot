@@ -1,40 +1,50 @@
-# Bluesky Lyric Bot
+# Universal Social Media Bot
 
-A serverless Python bot that automatically selects random lyrics from an SQL database and posts them directly to Bluesky. 
+A smart, free, and automated tool that grabs posts from a database and posts them to any social media platform. 
 
-The project runs completely free using **GitHub Actions**.
+It runs completely in the cloud using **GitHub Actions**, meaning you don't need a server and it's free to run.
 
 ---
 
 ## How It Works
 
-* **Database Integration:** Built using a SQLite database structure to manage a collection of lyrics.
-* **Automation Pipeline:** Driven by a GitHub Actions YAML schedule runner that wakes up daily, logs into the platform, and posts the content.
-* **Secure Environment:** Uses hidden GitHub Repository Secrets to protect account credentials (username and password).
+Instead of just running a simple script, this bot is flexible and safe:
+
+* **Adaptable to any platforms:** The code is built using a universal template. Right now, it's set up for Bluesky, but you can swap or add platforms (like X) by simply writing a new connector. The rest of the bot stays exactly the same.
+* **Multi-threading:** To keep things fast, the bot splits its work into two background workers that run at the same time. One worker safely grabs a post from your database, and the other worker connects to the internet to publish it. 
+* **Database protection:** Because multiple things are happening at once, the bot uses a virtual "lock" to make sure your database never gets mixed up or corrupted.
 
 ---
 
-## Project Structure
+## Class Diagram
 
-```text
-├── .github/workflows/
-│   └── scheduler.yml      # GitHub Actions automation schedule
-├── db_manager.py          # Script containing database setup and selector logic
-├── main.py                # Main execution loop connecting to Bluesky API
-└── README.md              # Documentation
-```
+This diagram shows how the different files and templates talk to each other inside the code:
 
-## Setting It Up 
+```mermaid
+classDiagram
+    direction LR
+    
+    class SocialMediaPlatform {
+        <<abstract template>>
+        +login()
+        +post(content)
+    }
+    
+    class BlueskyPlatform {
+        +login()
+        +post(content)
+    }
+    
+    class DatabaseManager {
+        +get_random_post()
+    }
+    
+    class MainEngine {
+        +producer_job()
+        +consumer_job()
+        +main()
+    }
 
-To run this  yourself, you must insert your login credentials securely into your repository settings:
-
-1. Navigate to your repository on **GitHub.com** and click the **Settings** gear tab.
-2. On the left sidebar, scroll down to expand **Secrets and variables**, then click **Actions**.
-3. Click the green **New repository secret** button at the top right.
-
-| Secret Name | Expected Value |
-| :--- | :--- |
-| **`BLUESKY_USERNAME`** | Your username *(e.g., username.bsky.social)* |
-| **`BLUESKY_PASSWORD`** | An App Password generated in your Bluesky settings |
-
-> ⚠️ **Important:** Do not use your main account password. Always generate a unique App Password inside your Bluesky account settings (*Settings -> App Passwords*) to keep your credentials safe.
+    SocialMediaPlatform <|-- BlueskyPlatform : Plugs into the template
+    MainEngine --> DatabaseManager : Safe database fetch
+    MainEngine --> SocialMediaPlatform : Passes post to the platform

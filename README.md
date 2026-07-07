@@ -32,6 +32,7 @@ You can run the entire test suite on your computer by typing this command into y
 ```bash
 python -m unittest test.py
 
+```
 ---
 
 ## Class Diagram

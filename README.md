@@ -14,6 +14,24 @@ Instead of just running a simple script, this bot is flexible and safe:
 * **Multi-threading:** To keep things fast, the bot splits its work into two background workers that run at the same time. One worker safely grabs a post from your database, and the other worker connects to the internet to publish it. 
 * **Database protection:** Because multiple things are happening at once, the bot uses a virtual "lock" to make sure your database never gets mixed up or corrupted.
 
+## Automated Testing
+
+This project includes automated testing to make sure the database and background workers always run safely and smoothly without crashing.
+
+### What the Tests Check:
+1. **The database layout:** Confirms the data tables and columns are created correctly.
+2. **Getting posts:** Checks that the bot successfully grabs a random post when data exists, and handles empty databases properly.
+3. **The background worker:** Starts a real background thread to make sure posts move safely into the posting queue.
+4. Verifies that if the database runs out of posts, the bot sends a safe stop signal to shut down the worker without locking up.
+5. **Missing passwords:** Deletes environment credentials during the test to prove the bot will log an error and exit safely instead of crashing.
+
+### How to Run the Tests
+
+You can run the entire test suite on your computer by typing this command into your terminal:
+
+```bash
+python -m unittest test.py
+
 ---
 
 ## Class Diagram

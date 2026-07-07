@@ -20,14 +20,11 @@ class DatabaseManager:
                 cur.execute(query)
                 result = cur.fetchone()
                 con.commit()
-
-                if result:
-                    return result[0]
-                return "No posts found in database"
+            return True
             
         except sqlite3.Error as e:
             print(f"Database error: {e}")
-            return None
+            return False
 
     def insert_data(self, post_text):
         query = """
@@ -40,14 +37,11 @@ class DatabaseManager:
                 cur.execute(query, (post_text,))
                 result = cur.fetchone()
                 con.commit()
-
-                if result:
-                    return result[0]
-                return "No posts found in database"
-            
+            return True
+        
         except sqlite3.Error as e:
             print(f"Database error: {e}")
-            return None
+            return False
         
     def get_random_post(self):
         query = "SELECT post_text FROM posts ORDER BY RANDOM() LIMIT 1;"

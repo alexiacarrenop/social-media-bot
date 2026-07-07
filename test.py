@@ -8,16 +8,19 @@ from main import producer_job, lyric_queue, BlueskyPlatform
 class TestBot(unittest.TestCase):
     def setUp(self):
         #run before every test case
-        self.db_path = ":memory:"
+        self.db_path = "test_temp.db"
         self.db = DatabaseManager(self.db_path)
         self.db.create_table()
     
     def tearDown(self):
         #run after every test case
-        if hasattr(self.db, 'con') and self.db.con:
-            self.db.con.close()
-    
         del self.db
+
+        if os.path.exists("test_temp.db"):
+            try:
+                os.remove("test_temp.db")
+            except PermissionError:
+                pass
         print("[Clean up] Temporary in-memory database deleted successfully")
 
     def test_create_table(self):
@@ -28,8 +31,8 @@ class TestBot(unittest.TestCase):
 
         self.assertEqual(len(result), 2, "Table should have exactly 2 columns")
 
-        self.assertEqual(result[0][1], "id", "First column should be 'id")
-        self.assertEqual(result[1][1], "post_text", "Second column should be 'post_text")
+        self.assertEqual(result[0][1], "id", "First column should be 'id'")
+        self.assertEqual(result[1][1], "post_text", "Second column should be 'post_text'")
 
     def test_fetching_from_empty(self): #fetching from empty database
         result = self.db.get_random_post()
@@ -49,13 +52,13 @@ class TestBot(unittest.TestCase):
     def test_producer(self):
         with sqlite3.connect(self.db_path) as con:
             cur = con.cursor()
-            cur.execute("INSERT INTO posts (post_text) VALUES ('Hello Bluesky);")
+            cur.execute("INSERT INTO posts (post_text) VALUES ('Hello Bluesky');")
             con.commit()
 
         while not lyric_queue.empty():
             lyric_queue.get()
 
-        producer_thread = threading.Thread(target=producer_job, args=(self.db))
+        producer_thread = threading.Thread(target=producer_job, args=(self.db_path,))
         producer_thread.start()
         producer_thread.join()
 
@@ -68,7 +71,7 @@ class TestBot(unittest.TestCase):
         while not lyric_queue.empty():
             lyric_queue.get()
 
-        producer_thread = threading.Thread(target=producer_job, args=(self.db))
+        producer_thread = threading.Thread(target=producer_job, args=(self.db_path,))
         producer_thread.start()
         producer_thread.join()
 
